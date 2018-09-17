@@ -15,7 +15,7 @@ H = 800
 open_canvas(W, H)
 character = load_image('animation_sheet.png')
 arr = [203, 535, 132, 243, 535, 470,477, 203, 715, 136, 316, 225, 510, 92, 692, 518, 682, 336, 712, 349]
-myX, myY,frame = 0,0,0
+myX, myY,frame = 400,400,0
 
 
 def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
@@ -24,16 +24,16 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
     Col_X,Col_Y = 0,0
     def MoveRight():
         global myX, myY
-        myX = myX + 2
+        myX = myX + 1
     def MoveLeft():
         global myX, myY
-        myX = myX - 2
+        myX = myX - 1
     def MoveUp():
         global myX, myY
-        myY = myY + 2
+        myY = myY + 1
     def MoveDown():
         global myX, myY
-        myY = myY - 2
+        myY = myY - 1
 
     if(x - myX < 0):    #이전값과 비교
         Col_X = -1
@@ -57,15 +57,14 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
     while True:
         if(Col_X>0):
             MoveRight()
-            SetDirection(Col_X)
         elif (Col_X < 0):
             MoveLeft()
-            SetDirection(Col_X)
 
         if(Col_Y>0):
             MoveUp()
         elif(Col_Y<0):
             MoveDown()
+        SetDirection(Col_X)
 
         if(myX -5 < x < myX+5):
             Col_X = 0
