@@ -12,30 +12,24 @@ from pico2d import *
 W = 800
 H = 800
 
+open_canvas(W, H)
 character = load_image('animation_sheet.png')
 arr = [203, 535, 132, 243, 535, 470, 203, 715, 136, 316, 225, 510, 92, 692, 518, 682, 336, 712, 349]
 myX, myY = 0,0
 
-open_canvas(W, H)
 
 def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
     global myX, myY
-
-    def MoveRIGHT():
+    Col_X,Col_Y = 0,0
+    def MoveRight():
         pass
-
     def MoveLeft():
         pass
-
-    
     def MoveUp():
         pass
-
     def MoveDown():
         pass
-    
-    Col_X,Col_Y = 0,0
-    
+
     if(x - myX < 0):    #이전값과 비교
         Col_X = -1
     else:
@@ -46,20 +40,22 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
         Col_Y = 1
 
     if(Col_X>0):
-        MoveRIGHT()
+        MoveRight()
     else:
         MoveLeft()
 
     if(Col_Y>0):
-        MoveUP()
+        MoveUp()
     else:
         MoveDown()
-        
-        
 
-
-
+def SetDirection(n):
+    pass
 
 while (True):
-    Move2Pos()
+    for i in range(0,20,2):
+        SetDirection(Move2Pos(i,i+1))
+
+
+close_canvas()
 
