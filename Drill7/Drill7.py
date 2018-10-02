@@ -1,9 +1,9 @@
-# 20개의 임의의(x,y) 좌표로 구성된 경로를 따라 움직이는 캐릭터 구현
+# 10개의 (x,y) 좌표로 구성된 경로를 따라 움직이는 캐릭터 구현
 #   조건1 마지막 점에 다다르면, 그 다음에는 다시 맨 처음 점으로 이동
 #   조건2 무한 반복함.
 #   조건3 캐릭터의 바라보는 방향(facing direction)을 이동 방향과 일치시켜야 함.
 
-# 작성일 2018 10 02
+# 작성일 2018 09 17
 # 작성자 강현웅
 # 2Dprogram수업
 
@@ -68,6 +68,7 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
             Col_Y = 0
         clear_canvas()
         background.draw(W / 2, H / 2)
+        mouse.draw(x+20,y-20)
         if (Col_X > 0):
             character.clip_draw(frame * 100, 100, 90, 90, myX, myY)
         else:
@@ -78,22 +79,6 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
 
         if (Col_X == Col_Y == 0):
             break;
-
-#def handle_events():
-#    global running,move
-#    global ClickX,ClickY,MouseX, MouseY
-#    events = get_events()
-#    for event in events:
-#        if event.type == SDL_QUIT:
-#            running = False
-#        elif event.type == SDL_KEYDOWN:  # key down
-#            if event.key == SDLK_ESCAPE:
-#                running = False
-#        elif event.type == SDL_MOUSEBUTTONDOWN:
-#            move = False
-#            ClickX, ClickY = event.x-20, 800 - 1 - event.y+20
-#        elif event.type == SDL_MOUSEMOTION:
-#            MouseX, MouseY = event.x, 800 - 1 - event.y
 
 def draw_line(p1, p2):
     global myX, myY, frame, move
