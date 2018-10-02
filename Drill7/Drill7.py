@@ -1,9 +1,9 @@
-# 10개의 (x,y) 좌표로 구성된 경로를 따라 움직이는 캐릭터 구현
+# 20개의 임의의(x,y) 좌표로 구성된 경로를 따라 움직이는 캐릭터 구현
 #   조건1 마지막 점에 다다르면, 그 다음에는 다시 맨 처음 점으로 이동
 #   조건2 무한 반복함.
 #   조건3 캐릭터의 바라보는 방향(facing direction)을 이동 방향과 일치시켜야 함.
 
-# 작성일 2018 09 17
+# 작성일 2018 10 02
 # 작성자 강현웅
 # 2Dprogram수업
 
@@ -68,7 +68,6 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
             Col_Y = 0
         clear_canvas()
         background.draw(W / 2, H / 2)
-        mouse.draw(x+20,y-20)
         if (Col_X > 0):
             character.clip_draw(frame * 100, 100, 90, 90, myX, myY)
         else:
@@ -98,49 +97,21 @@ def Move2Pos(x, y):  # 캐릭터 이동을 방향을 정의합니다.
 
 def draw_line(p1, p2):
     global myX, myY, frame, move
-    CurveParamiter = 14
-    BoundaryX = p2[0] - p1[0]
-    BoundaryY = p2[1] - p1[1]
-    if (BoundaryX < 0):
-        BoundaryX = BoundaryX * -1
-    if (BoundaryY < 0):
-        BoundaryY = BoundaryY * -1
-    for i in range(0,CurveParamiter+1):
-        if(p2[0] > p1[0]):
-            t = i / CurveParamiter
-            if(i<CurveParamiter/2):
-                y = (1  -t)*p1[1]+t*p2[1] + (CurveParamiter*CurveParamiter/4) - ((CurveParamiter/2-i)*(CurveParamiter/2-i))
-            else:
-                y = (1  -t)*p1[1]+t*p2[1] + (CurveParamiter*CurveParamiter/4) - ((i - CurveParamiter/2)*(i - CurveParamiter/2))
-        else:
-            t = i / CurveParamiter
-            if(i<CurveParamiter/2):
-                y = (1  -t)*p1[1]+t*p2[1] - (CurveParamiter*CurveParamiter/4) + ((CurveParamiter/2-i)*(CurveParamiter/2-i))
-            else:
-                y = (1  -t)*p1[1]+t*p2[1] - (CurveParamiter*CurveParamiter/4) + ((i - CurveParamiter/2)*(i - CurveParamiter/2))
-        if(p2[1] > p1[1]):
-            t = i / CurveParamiter
-            if (i < CurveParamiter / 2):
-                x = (1  -t)*p1[0]+t*p2[0] - (CurveParamiter*CurveParamiter/4) + ((CurveParamiter/2-i)*(CurveParamiter/2-i))
-            else:
-                x = (1  -t)*p1[0]+t*p2[0] - (CurveParamiter*CurveParamiter/4) + ((CurveParamiter/2-i)*(CurveParamiter/2-i))
-        else:
-            t = i / CurveParamiter
-            if (i < CurveParamiter / 2):
-                x = (1  -t)*p1[0]+t*p2[0] + (CurveParamiter*CurveParamiter/4) - ((CurveParamiter/2-i)*(CurveParamiter/2-i))
-            else:
-                x = (1  -t)*p1[0]+t*p2[0] + (CurveParamiter*CurveParamiter/4) - ((CurveParamiter/2-i)*(CurveParamiter/2-i))
+    CurveParamiter = 20
 
+    for i in range(0,CurveParamiter+1):
+        t = i / CurveParamiter
+        x = (1 - t) * p1[0] + t * p2[0]
+        y = (1 - t) * p1[1] + t * p2[1]
         Move2Pos(x,y)
 
 
 size = 20
-points = [(ran)]
+points = [(random.randint(100, W-100), random.randint(100, H-100)) for i in range(20)]
 num = 1
 myX = 50
 myY = 600
 while True:
-
     draw_line(points[num - 1], points[num])
     num = (num + 1) % size
 
