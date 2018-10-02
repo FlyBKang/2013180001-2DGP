@@ -7,7 +7,7 @@
 # 작성일 2018 10 2
 # 작성자 강현웅
 # 2Dprogram수업
-
+ 
 from pico2d import *
 import random
 W = 800
