@@ -94,8 +94,8 @@ def draw_line(p1, p2):
 size = 20
 points = [(random.randint(50, W-50), random.randint(50, H-50)) for i in range(20)]
 num = 1
-myX = points[0][0]
-myY = points[0][1]
+myX = 50
+myY = 600
 while True:
     draw_line(points[num - 1], points[num])
     num = (num + 1) % size
