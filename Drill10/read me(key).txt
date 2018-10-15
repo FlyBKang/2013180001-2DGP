@@ -1,0 +1,3 @@
+
+	Pause = Left Shift
+	Play  = Right Shift
