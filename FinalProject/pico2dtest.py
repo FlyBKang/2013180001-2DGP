@@ -82,5 +82,16 @@ class Effect:
         self.dirY = 0
         self.Life = life
 
+class Map:
+    W = 0
+    H = 0
+    ID = 0
+    def Set(self,w,h,id):
+        W = w
+        H = h
+        ID = id
+
+
+
 
 

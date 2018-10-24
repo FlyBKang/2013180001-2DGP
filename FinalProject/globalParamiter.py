@@ -24,5 +24,7 @@ Star_EffectPool = [container.Effect(0,0,50,0,0,random.randint(7,12),random.randi
 for i in range(0,100):
     Star_EffectPool[i].RandomSetting(random.randint(50,100),WindowX,WindowY)
 MouseStar = [container.Effect(0,0,15,0,0,random.randint(22,33),random.randint(22,33)) for i in range(0,50)]
+ClickStar = [container.Effect(0,0,15,0,0,random.randint(7,10),random.randint(7,10)) for i in range(0,50)]
+ClickCnt = 0
 for i in range(0,50):
     MouseStar[i].live = False
