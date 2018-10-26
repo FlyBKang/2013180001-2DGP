@@ -18,6 +18,12 @@ class Monster:
     def Draw(self):
         self.frame = (self.frame+1)%self.framesize
 
+class Map:
+    HightLight = (200,200)
+    Size = (0,0)
+    def __init__(self,x,y,w,h):
+        self.HightLight = (x,y)
+        self.Size = (w,h)
 
 class Player:
     live = True
@@ -39,13 +45,13 @@ class Player:
             self.X = self.X + self.forceX*self.Speed
             self.Y = self.Y + self.forceY*self.Speed
 
-        if((0 < self.X < 600) == False):
+        if((10 < self.X < 490) == False):
             if(self.slow == True):
                 self.X = self.X - self.forceX*self.Speed*0.5
             else:
                 self.X = self.X - self.forceX * self.Speed
 
-        if((0 < self.Y < 800) == False):
+        if((20 < self.Y < 780) == False):
             if(self.slow == True):
                 self.Y = self.Y - self.forceY*self.Speed*0.5
             else:
@@ -82,14 +88,13 @@ class Effect:
         self.dirY = 0
         self.Life = life
 
-class Map:
-    W = 0
-    H = 0
-    ID = 0
-    def Set(self,w,h,id):
-        W = w
-        H = h
-        ID = id
+class Item:
+    IsHave = False
+    def __init__(self,num):
+        self.ID = num
+
+
+
 
 
 
