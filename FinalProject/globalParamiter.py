@@ -9,6 +9,7 @@ prev_stage = "main"
 g_Level = -1
 g_Hard = 0
 g_Type = 0
+g_ATT = False
 
 
 #in game stage
@@ -38,3 +39,8 @@ for i in range(0,50):
 
 #serve menu
 serve = False
+
+#Bullet
+g_BulletArr = [container.PlayerBullet(i) for i in range(0,200)]
+g_BulletCnt = 0
+g_BulletDelay = 3

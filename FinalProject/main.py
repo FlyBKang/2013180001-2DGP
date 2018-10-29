@@ -33,7 +33,7 @@ P_textlevel = [load_image("menu_stage.png"),load_image("menu_level.png"),load_im
 stage_arr = [container.Map(0,0,500,800)]
 
 def handle_events():
-    global stage,MyMouse,ClickCnt,g_Level,g_Hard,g_Type,serve
+    global stage,MyMouse,ClickCnt,g_Level,g_Hard,g_Type,serve,g_BulletCnt,g_BulletDelay,g_ATT
     events = get_events()
     for event in events:
         if event.type == SDL_MOUSEMOTION:
@@ -118,6 +118,12 @@ def handle_events():
                 elif event.key == SDLK_DOWN:
                     g_Player.forceY = -1
 
+                if event.key == SDLK_a:
+                    print("A")
+                    g_ATT = True
+
+
+
             if event.type == SDL_KEYUP:  # key up
                 if event.key == SDLK_LSHIFT:
                     g_Player.slow = False
@@ -135,6 +141,10 @@ def handle_events():
                     if(g_Player.forceY == 1):
                         g_Player.forceY = 0
 
+                if event.key == SDLK_a:
+                    g_ATT = False
+                    g_BulletCnt = g_BulletDelay
+
                 if event.key == SDLK_ESCAPE:
                     if(serve == True):
                         serve = False
@@ -146,6 +156,23 @@ def handle_events():
 
 hide_cursor()
 while(True):
+
+    if(g_ATT == True):
+        g_BulletCnt = g_BulletCnt + 1
+        if (g_BulletCnt > g_BulletDelay):
+            Bulletlenth = 50 // g_Player.BulletNum
+            BulletTemp = 0
+            PosTemp = -1
+            for Arr in g_BulletArr:
+                if (Arr.Draw == False):
+
+                    Arr.Set(g_Player.X + Bulletlenth * (-g_Player.BulletNum/2 + BulletTemp), g_Player.Y+ 5*(PosTemp), g_Type, g_Player.BulletSpeed , g_Player.X + Bulletlenth * 2 * (-g_Player.BulletNum/2 + BulletTemp) ,800)
+                    BulletTemp = BulletTemp + 1
+                    PosTemp = PosTemp * (-1)
+                if (BulletTemp == g_Player.BulletNum):
+                    g_BulletCnt = 0
+                    break
+
     handle_events()
     clear_canvas()
     if(stage == "main"):
@@ -181,6 +208,17 @@ while(True):
                 else:
                    g_StageTime = g_StageTime + 1
                 P_stage[0].clip_composite_draw(0 + (int)(g_StageTime / 3 * 2), 0 + (int)(P_stage[0].h-g_StageTime), (int)(P_stage[0].w // 3), (int)(P_stage[0].h // 2), 0, "", 250, 400, 500, 800)
+
+        for Arr in g_BulletArr:
+            if(Arr.Draw == True):
+                if(Arr.Type == 2):
+                    Arr.AutoShoot(g_Player.X+100,800)
+                    Arr.AutoShoot(g_Player.X-100,800)
+                elif(Arr.Type == 0):
+                    Arr.Shoot(0,0)
+                else:
+                    (Arr.Shoot(Arr.DirX,Arr.DirY))
+                draw_rectangle(Arr.X-5,Arr.Y-5,Arr.X+5,Arr.Y+5)
 
         if(g_Player.live == True):
             g_Player.Move()
@@ -271,7 +309,7 @@ while(True):
             #P_stage[3].clip_draw(stage_arr[0].HightLight[0],stage_arr[0].HightLight[1],stage_arr[0].Size[0],stage_arr[0].Size[1],570,470,100,100)
     elif(stage == "end"):
         break
-    delay(0.033)
+    delay(0.0250)
 
 
 
