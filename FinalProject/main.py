@@ -119,8 +119,11 @@ def handle_events():
                     g_Player.forceY = -1
 
                 if event.key == SDLK_a:
-                    print("A")
                     g_ATT = True
+
+                if event.key == SDLK_TAB:#치트
+                    g_Type = (g_Type+1) % 3
+
 
 
 
@@ -161,15 +164,26 @@ while(True):
         g_BulletCnt = g_BulletCnt + 1
         if (g_BulletCnt > g_BulletDelay):
             Bulletlenth = 50 // g_Player.BulletNum
-            BulletTemp = 0
+            BulletTemp = 1
             PosTemp = -1
             for Arr in g_BulletArr:
                 if (Arr.Draw == False):
+                    if(g_Type != 2):
+                        Arr.Set(g_Player.X + Bulletlenth * (-g_Player.BulletNum//2 + BulletTemp), g_Player.Y+ 8*(PosTemp), g_Type, g_Player.BulletSpeed , Bulletlenth  * (-g_Player.BulletNum//2 + BulletTemp)//10 ,800,g_Player.BulletPower)
+                    else:
+                        if BulletTemp == 1 or BulletTemp == g_Player.BulletNum:
+                            Arr.Set(g_Player.X + Bulletlenth * (-g_Player.BulletNum // 2 + BulletTemp),
+                                g_Player.Y + 8 * (PosTemp), g_Type, g_Player.BulletSpeed,
+                                Bulletlenth * (-g_Player.BulletNum // 2 + BulletTemp) // 10, 800, g_Player.BulletPower)
+                        else:
+                            Arr.Set(g_Player.X + Bulletlenth * (-g_Player.BulletNum // 2 + BulletTemp),
+                                g_Player.Y + 8 * (PosTemp), 0, g_Player.BulletSpeed,
+                                Bulletlenth * (-g_Player.BulletNum // 2 + BulletTemp) // 10, 800, g_Player.BulletPower)
 
-                    Arr.Set(g_Player.X + Bulletlenth * (-g_Player.BulletNum/2 + BulletTemp), g_Player.Y+ 5*(PosTemp), g_Type, g_Player.BulletSpeed , g_Player.X + Bulletlenth * 2 * (-g_Player.BulletNum/2 + BulletTemp) ,800)
+
                     BulletTemp = BulletTemp + 1
                     PosTemp = PosTemp * (-1)
-                if (BulletTemp == g_Player.BulletNum):
+                if (BulletTemp == g_Player.BulletNum+1):
                     g_BulletCnt = 0
                     break
 
@@ -212,13 +226,30 @@ while(True):
         for Arr in g_BulletArr:
             if(Arr.Draw == True):
                 if(Arr.Type == 2):
-                    Arr.AutoShoot(g_Player.X+100,800)
-                    Arr.AutoShoot(g_Player.X-100,800)
+                    TargetTemp = (g_Player.X,850)
+                    TempCnt = 0
+                    for Monster in g_MonsterPool:
+                        if Monster.live == True:
+                            if g_Player.Y+225 < Monster.Y:
+                                if TargetTemp[1] > Monster.Y:
+                                    TargetTemp = (Monster.X,Monster.Y)
+
+                    if(TargetTemp[1] == 850):
+                        Arr.AutoShoot(Arr.X,TargetTemp[1])
+                    else:
+                        Arr.AutoShoot(TargetTemp[0],TargetTemp[1])
+
                 elif(Arr.Type == 0):
                     Arr.Shoot(0,0)
                 else:
                     (Arr.Shoot(Arr.DirX,Arr.DirY))
-                draw_rectangle(Arr.X-5,Arr.Y-5,Arr.X+5,Arr.Y+5)
+                if(Arr.Type == 1):
+                    P_bullet.clip_draw(363,137,22,22,Arr.X,Arr.Y,17,17)
+                elif(Arr.Type == 0):
+                    P_bullet.clip_draw(533,220,17,27,Arr.X,Arr.Y,12,22)
+                else:
+                    P_bullet.clip_draw(360,115,20,20,Arr.X,Arr.Y,24,24)
+
 
         if(g_Player.live == True):
             g_Player.Move()
@@ -233,6 +264,18 @@ while(True):
                 P_player.clip_draw(0,0,65,65,g_Player.X,g_Player.Y)
             else:
                 P_player.clip_draw(28,28,7,7,g_Player.X,g_Player.Y)
+
+        #Collision
+        for Monster in g_MonsterPool:
+            if Monster.live == True:
+                for Bullet in g_BulletArr:
+                    if(Bullet.Draw == True):
+                        if(Monster.X-Monster.W//2 <  Bullet.X  < Monster.X+Monster.W//2):
+                            if(Monster.Y-Monster.H//2< Bullet.Y <Monster.Y+Monster.H//2):
+                                Monster.Hit(Bullet.Damage)
+                                Bullet.Draw = False
+                draw_rectangle(Monster.X-Monster.W,Monster.Y-Monster.H,Monster.X+Monster.W,Monster.Y+Monster.H)
+
     elif(stage == "level"):#
         P_menuback.draw(WindowX/2,WindowY/2,WindowX,WindowY)
         P_effectlevel.draw(WindowX/2,WindowY/2,WindowX-80,WindowY-80)
@@ -262,11 +305,11 @@ while(True):
 
 
         if(g_Type== 0):
-            P_item.clip_draw(46*3,3+47*1, 45, 46, 330, 655, 70, 70)
+            P_item.clip_draw(46*3,3+47*1, 45, 46, 330, 662, 70, 70)
         elif(g_Type == 1):
-            P_item.clip_draw(46*3,3+47*1, 45, 46, 450, 655, 70, 70)
+            P_item.clip_draw(46*3,3+47*1, 45, 46, 450, 662, 70, 70)
         else:
-            P_item.clip_draw(46*3,3+47*1, 45, 46, 570, 655, 70, 70)
+            P_item.clip_draw(46*3,3+47*1, 45, 46, 570, 662, 70, 70)
 
         if(g_Hard == 0):
             P_item.clip_draw(46*3,3+47*1, 45, 46, 330, 455, 70, 70)

@@ -2,7 +2,7 @@ import pico2dtest as container
 import random
 
 #stage = title, main, level, stage, end
-stage = "level"
+stage = "main"
 prev_stage = "main"
 
 #level menu
@@ -26,6 +26,12 @@ g_TimeCheck = False
 g_Player = container.Player(WindowX/8*2.5,WindowY/8*1,5,8,8)
 g_MonsterPool = [container.Monster(-1,-1,0,0)for i in range(0,100)]
 
+for i in range(0,50):
+    g_MonsterPool[i].live = True
+    g_MonsterPool[i].SetPos(random.randint(0,500),random.randint(0,800))
+
+
+
 
 #effect
 Star_EffectPool = [container.Effect(0,0,50,0,0,random.randint(7,12),random.randint(7,12)) for i in range(0,300)]
@@ -41,6 +47,6 @@ for i in range(0,50):
 serve = False
 
 #Bullet
-g_BulletArr = [container.PlayerBullet(i) for i in range(0,200)]
+g_BulletArr = [container.PlayerBullet(i) for i in range(0,300)]
 g_BulletCnt = 0
 g_BulletDelay = 3

@@ -4,6 +4,9 @@ import random
 class Monster:
     live = False
     frame = 0
+    W = 40
+    H = 40
+    life = 10
     def __init__(self, x,y,degree,framesize):
         self.X = x
         self.Y = y
@@ -17,6 +20,10 @@ class Monster:
         self.Degree = degree
     def Draw(self):
         self.frame = (self.frame+1)%self.framesize
+    def Hit(self,power):
+        self.life -= power
+        if(self.life < 0):
+            self.live = False
 
 class Map:
     HightLight = (200,200)
@@ -29,9 +36,9 @@ class Player:
     live = True
     frame = 0
     slow = False
-    BulletSpeed = 12
+    BulletSpeed = 15
     BulletNum = 5
-    BulletPower = 2
+    BulletPower = 10
     def __init__(self,x,y,life,speed,framesize):
         self.X = x
         self.Y = y
@@ -108,13 +115,14 @@ class Item:
 
 class PlayerBullet:
     Draw = False
-
+    Damage = 0
     def __init__(self,id):
         self.ID = id
         self.Type = 0
         self.Speed = 0
         self.X = 800
         self.Y = 800
+        self.Num = -1
     def Shoot(self,DirX,DirY):
         if(self.Draw == True):
             if(self.Type == 0 ):
@@ -135,24 +143,23 @@ class PlayerBullet:
                     self.X = self.X + DirX
 
     def AutoShoot(self,TargetX,TargetY):
+        self.Fin = False
         if(self.Draw == True):
             if(self.Type == 2):
-                if(-10 <self.x or 510 < self.X):
+                if(-10 > self.X or 510 < self.X):
                     self.Draw = False
-                elif(-10 <self.Y or 810 < self.Y):
+                elif(-10 > self.Y or 810 <  self.Y):
                     self.Draw = False
                 else:
-                    if(self.TargetX-15 > self.X):
-                        self.X = self.X + self.Speed*0.8
-                    if(self.X > TargetX+15):
-                        self.X = self.X - self.Speed*0.8
+                    if(TargetX-5 > self.X):
+                        self.X = self.X + (TargetX - self.X)*0.17
+                    if(self.X > TargetX+5):
+                        self.X = self.X + (TargetX - self.X) * 0.17
 
-                    if(self.TargetY-15 > self.Y):
-                        self.Y = self.Y + self.Speed
-                    if(self.Y > TargetY+15):
-                        self.Y = self.Y - self.Speed
+                    self.Y = self.Y + self.Speed
 
-    def Set(self,x,y,type,speed,dirX,dirY):
+    def Set(self,x,y,type,speed,dirX,dirY,damage):
+        self.Damage = damage
         self.Draw = True
         self.X = x
         self.Y = y
@@ -160,6 +167,7 @@ class PlayerBullet:
         self.Speed = speed
         self.DirX = dirX
         self.DirY = dirY
+        self.Num = -1
 
 
 
