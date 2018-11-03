@@ -1,5 +1,20 @@
 import math
 import random
+from pico2d import *
+
+class TIME:
+    Time_Frame = 0.0
+    Sec_Per_Frame = 0.0
+    IntTime = 0
+    MapCompensatorSpeed = 20
+    CompensatorSpeed = 30
+    def __init__(self):
+        self.Time_Start = get_time()
+
+    def TimeReset(self):
+        self.Time_Start = get_time()
+
+Timer = TIME()
 
 class Monster:
     live = False
@@ -7,19 +22,45 @@ class Monster:
     W = 40
     H = 40
     life = 10
+    DirX = 0
+    DirY = 0
+    Speed = 5
+    SetTime = 0
+    queue = [(-1,SetTime),]
+    AttackType = 0
+    AttackDelay = 0.0
+    AttackCycle = 2.5
+
     def __init__(self, x,y,degree,framesize):
         self.X = x
         self.Y = y
         self.Degree = degree
         self.frame = 0
         self.framesize = framesize
-    def SetPos(self, x,y):
+    def Set(self, x,y,l,time,type,cycle):
         self.X = x
         self.Y = y
+        self.life =l
+        self.SetTime = time
+        self.AttackType = type
+        self.AttackCycle = cycle
+    def SetDir(self,x,y):
+        self.DirX = x
+        self.DirY = y
     def Rotate(self, degree):
         self.Degree = degree
+    def Move(self):
+        self.X += self.DirX*self.Speed*Timer.Time_Frame*Timer.CompensatorSpeed
+        self.Y += self.DirY*self.Speed*Timer.Time_Frame*Timer.CompensatorSpeed
+    def Attack(self):
+        if(self.AttackDelay > self.AttackCycle):
+            return self.AttackType
+        else:
+            self.AttackDelay += Timer.Time_Frame*5
+            return -1
+
     def Draw(self):
-        self.frame = (self.frame+1)%self.framesize
+        self.frame = self.frame = 4 + (int)((Timer.Sec_Per_Frame*8)-(Timer.Sec_Per_Frame*8 % 1))%4
     def Hit(self,power):
         self.life -= power
         if(self.life < 0):
@@ -51,28 +92,28 @@ class Player:
         self.AttDelay = 5
     def Move(self):
         if(self.slow == True):
-            self.X = self.X + self.forceX*self.Speed*0.5
-            self.Y = self.Y + self.forceY*self.Speed*0.5
+            self.X = self.X + self.forceX*self.Speed*0.5*Timer.Time_Frame* Timer.CompensatorSpeed
+            self.Y = self.Y + self.forceY*self.Speed*0.5*Timer.Time_Frame* Timer.CompensatorSpeed
         else:
-            self.X = self.X + self.forceX*self.Speed
-            self.Y = self.Y + self.forceY*self.Speed
+            self.X = self.X + self.forceX*self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
+            self.Y = self.Y + self.forceY*self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
 
         if((10 < self.X < 490) == False):
             if(self.slow == True):
-                self.X = self.X - self.forceX*self.Speed*0.5
+                self.X = self.X - self.forceX*self.Speed*0.5*Timer.Time_Frame* Timer.CompensatorSpeed
             else:
-                self.X = self.X - self.forceX * self.Speed
+                self.X = self.X - self.forceX * self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
 
         if((20 < self.Y < 780) == False):
             if(self.slow == True):
-                self.Y = self.Y - self.forceY*self.Speed*0.5
+                self.Y = self.Y - self.forceY*self.Speed*0.5*Timer.Time_Frame* Timer.CompensatorSpeed
             else:
-                self.Y = self.Y - self.forceY * self.Speed
+                self.Y = self.Y - self.forceY * self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
     def Draw(self):
-        self.frame = (self.frame + 1) % self.framesize
         if (self.forceX != 0):
-            if(self.frame == self.framesize-1):
-                self.frame = 4
+            self.frame = 4 + (int)((Timer.Sec_Per_Frame*8)-(Timer.Sec_Per_Frame*8 % 1))%4
+        else:
+            self.frame = (int)((Timer.Sec_Per_Frame*8)-(Timer.Sec_Per_Frame*8 % 1))%self.framesize
     def Attack(self,check):
         if(check == True):
             self.AttCnt = self.AttCnt + 1
@@ -98,7 +139,7 @@ class Effect:
         if(self.live == True):
             self.X = self.X + self.dirX
             self.Y = self.Y + self.dirY
-            self.Life= self.Life-1
+            self.Life= self.Life-1*Timer.Time_Frame*Timer.CompensatorSpeed
             if(self.Life <= 0):
                 self.live = False
     def RandomSetting(self,life,MaxX,MaxY):
@@ -131,7 +172,7 @@ class PlayerBullet:
                 elif(-10 > self.Y or 810 < self.Y):
                     self.Draw = False
                 else:
-                    self.Y = self.Y + self.Speed
+                    self.Y = self.Y + self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
 
             elif(self.Type == 1):
                 if(-10  > self.X or 510 < self.X):
@@ -139,8 +180,8 @@ class PlayerBullet:
                 elif(-10 > self.Y or 810 < self.Y):
                     self.Draw = False
                 else:
-                    self.Y = self.Y + self.Speed
-                    self.X = self.X + DirX
+                    self.Y = self.Y + self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
+                    self.X = self.X + DirX*Timer.Time_Frame* Timer.CompensatorSpeed
 
     def AutoShoot(self,TargetX,TargetY):
         self.Fin = False
@@ -152,11 +193,11 @@ class PlayerBullet:
                     self.Draw = False
                 else:
                     if(TargetX-5 > self.X):
-                        self.X = self.X + (TargetX - self.X)*0.17
+                        self.X = self.X + (TargetX - self.X)* 0.19*Timer.Time_Frame* Timer.CompensatorSpeed
                     if(self.X > TargetX+5):
-                        self.X = self.X + (TargetX - self.X) * 0.17
+                        self.X = self.X + (TargetX - self.X) * 0.19*Timer.Time_Frame* Timer.CompensatorSpeed
 
-                    self.Y = self.Y + self.Speed
+                    self.Y = self.Y + self.Speed*Timer.Time_Frame* Timer.CompensatorSpeed
 
     def Set(self,x,y,type,speed,dirX,dirY,damage):
         self.Damage = damage
@@ -168,6 +209,31 @@ class PlayerBullet:
         self.DirX = dirX
         self.DirY = dirY
         self.Num = -1
+
+class MonsterBullet:
+    Live = False
+    Type = 0
+    X = 0
+    Y = 0
+    DirX = 0.00
+    DirY = 0.00
+    Speed = 0
+    W = 20
+    H = 20
+    def Set(self,x,y,Dx,Dy,speed,w,h):
+        self.X = x
+        self.Y = y
+        self.DirX = Dx
+        self.DirY = Dy
+        self.Speed = speed
+        self.W = w
+        self.H = h
+    def ChangeDir(self,x,y):
+        self.X = x
+        self.Y = y
+    def Move(self):
+        self.X += self.DirX*Timer.Time_Frame*Timer.CompensatorSpeed
+        self.Y += self.DirY*Timer.Time_Frame*Timer.CompensatorSpeed
 
 
 
