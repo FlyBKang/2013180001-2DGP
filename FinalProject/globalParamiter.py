@@ -148,7 +148,7 @@ class GLOBAL:
                     self.g_MonsterPool[i].SetDir(0,-0.5)
 
             if(Global.g_Hard >= 2):
-                self.g_MonsterPool[42].Set(250, 820, 250 + 100 * self.g_Hard, 18, 3, 8)
+                self.g_MonsterPool[42].Set(250, 820, 250 + 100 * self.g_Hard, 42, 3, 8)
                 self.g_MonsterPool[42].SetDir(0, -0.5)
 
                 for i in range(65,70):
