@@ -6,6 +6,10 @@ from framework import *
 #텍스쳐를 불러옵니다.
 
 elapsed_time = 0.00
+hide_cursor()
+
+import sys
+print("Memory Locate: " + str((sys.getsizeof(Global) + sys.getsizeof(Texture) + sys.getsizeof(Timer))) + "Byte")
 
 while(True):
     elapsed_time = get_time()

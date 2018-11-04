@@ -28,4 +28,6 @@ def MonsterBulletCol():
             if(Arr.X - Arr.W/2 < Global.g_Player.X <Arr.X + Arr.W/2):
                 if(Arr.Y - Arr.H/2 < Global.g_Player.Y <Arr.Y + Arr.H/2):
                     Arr.Live = False
-                    print("Hit")
+                    if(Global.g_Player.invincibility == False):
+                        Global.g_Player.Life -= 1
+                        Global.g_Player.invincibility = True

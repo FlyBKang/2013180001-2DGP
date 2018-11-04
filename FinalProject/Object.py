@@ -43,6 +43,19 @@ class Monster:
         self.life =l
         self.SetTime = time
         self.AttackType = type
+        if(type == 2 or type == 3):
+            self.W = 100
+            self.H = 100
+            self.AttackDelay = 0.0
+        elif(type == 1):
+            self.W = 50
+            self.H = 50
+            self.AttackDelay = cycle - 1.5
+        elif(type == 0):
+            self.W = 40
+            self.H = 40
+            self.AttackDelay = cycle - 1.5
+
         self.AttackCycle = cycle
     def SetDir(self,x,y):
         self.DirX = x
@@ -80,6 +93,17 @@ class Player:
     BulletSpeed = 15
     BulletNum = 5
     BulletPower = 10
+    invincibility = False
+    invincibilityTime = 0.0
+    invincibilityDelay = 1.0
+    def Invin(self):
+        if(self.invincibility == True):
+            if(self.invincibilityDelay < self.invincibilityTime):
+                self.invincibility = False
+                self.invincibilityTime = 0.0
+            else:
+                self.invincibilityTime += Timer.Time_Frame
+
     def __init__(self,x,y,life,speed,framesize):
         self.X = x
         self.Y = y
@@ -114,13 +138,7 @@ class Player:
             self.frame = 4 + (int)((Timer.Sec_Per_Frame*8)-(Timer.Sec_Per_Frame*8 % 1))%4
         else:
             self.frame = (int)((Timer.Sec_Per_Frame*8)-(Timer.Sec_Per_Frame*8 % 1))%self.framesize
-    def Attack(self,check):
-        if(check == True):
-            self.AttCnt = self.AttCnt + 1
-            self.Att = True
-        else:
-            self.AttCnt = 0
-            self.Att = False
+
 
 
 class Effect:

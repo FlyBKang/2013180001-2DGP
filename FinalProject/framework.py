@@ -36,6 +36,7 @@ def Collision():
     if(Global.stage == "stage"):
         MonsterCol()
         MonsterBulletCol()
+        Global.g_Player.Invin()
 
 def Draw():
     global Global
@@ -50,6 +51,7 @@ def Draw():
         Global.MonsterAttack()
         BulletDraw()
         Collision()
+        UI_Draw()#임시
     elif(Global.stage == "level"):
         LevelDraw()
 
@@ -58,6 +60,12 @@ def Draw():
 
     #mouse cursor
     Texture.P_mouse.draw(Global.MyMouse[0],Global.MyMouse[1],100,100)
+
+def UI_Draw():
+    global Global,Texture,Timer
+    font = load_font('ENCR10B.TTF', 16)
+    font.draw(400,760, '(Life: %d)' %Global.g_Player.Life, (255, 255, 0))
+
 
 def EffectDraw():
     global Global
@@ -152,10 +160,10 @@ def StageDraw():
                     Global.g_StageTime = Global.g_StageTime + 1.25*Timer.Time_Frame* Timer.MapCompensatorSpeed
                 if (Texture.P_stage[0].h > Global.g_StageTime >= Texture.P_stage[0].h // 2):
                     Global.stageback = -1
-                    print(Timer.IntTime)
             elif (Global.stageback == -1):
                 if (Global.g_StageTime >= Texture.P_stage[0].h):
                     print(Timer.IntTime)
+                    pass
                 else:
                     Global.g_StageTime = Global.g_StageTime + 1.25*Timer.Time_Frame* Timer.MapCompensatorSpeed
                 Texture.P_stage[0].clip_composite_draw(0 + (int)(Global.g_StageTime / 3 * 2),
@@ -184,7 +192,16 @@ def StageDraw():
         angle = math.radians(1)
         for monster in Global.g_MonsterPool:
             if(monster.live == True):
-                Texture.P_Monster.clip_composite_draw(0,300,80,80,monster.Degree * angle,"",monster.X,monster.Y,Monster.W,Monster.H)
+                if(monster.AttackType == 0):
+                    Texture.P_Monster.clip_composite_draw(0,300,80,70,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+                elif(monster.AttackType == 1):
+                    Texture.P_Monster.clip_composite_draw(80,300,75,69,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+                elif(monster.AttackType == 2):
+                    Texture.P_Monster.clip_composite_draw(0,1350,80,75,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+                elif(monster.AttackType == 3 or monster.AttackType == 4):
+                    Texture.P_Monster.clip_composite_draw(0,1350,80,75,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+
+
 
 
 def LevelDraw():
