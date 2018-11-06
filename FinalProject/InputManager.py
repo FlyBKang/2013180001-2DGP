@@ -129,10 +129,9 @@ def handle_events(events):
                     Global.g_BulletCnt = Global.g_BulletDelay
 
                 if event.key == SDLK_ESCAPE:
-                    if(Global.serve == True):
-                        Global.serve = False
+                    if(Global.pause == True):
+                        Global.pause = False
                     else:
-                        Global.serve = True
-                    print(Global.serve)
+                        Global.pause = True
         else:
             pass

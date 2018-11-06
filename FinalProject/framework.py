@@ -28,6 +28,7 @@ class TEXTURE:
                    load_image("resource\\menu_item.png")]
     # 텍스쳐를 불러옵니다.
     P_Monster = load_image("resource\\Unit.png")
+    P_Boss1 = load_image("resource\\boss1.png")
     stage_arr = [Map(0, 0, 500, 800)]
 
 Texture = TEXTURE()
@@ -156,13 +157,12 @@ def StageDraw():
                 Texture.P_stage[0].clip_composite_draw(0 + (int)(Global.g_StageTime / 3 * 2),
                                                        0 + (int)(Global.g_StageTime), (int)(Texture.P_stage[0].w // 3),
                                                        (int)(Texture.P_stage[0].h // 2), 0, "", 250, 400, 500, 800)
-                if (Global.serve == False):
-                    Global.g_StageTime = Global.g_StageTime + 1.25*Timer.Time_Frame* Timer.MapCompensatorSpeed
+                #if (Global.serve == False):
+                Global.g_StageTime = Global.g_StageTime + 1.25*Timer.Time_Frame* Timer.MapCompensatorSpeed
                 if (Texture.P_stage[0].h > Global.g_StageTime >= Texture.P_stage[0].h // 2):
                     Global.stageback = -1
             elif (Global.stageback == -1):
                 if (Global.g_StageTime >= Texture.P_stage[0].h):
-                    print(Timer.IntTime)
                     pass
                 else:
                     Global.g_StageTime = Global.g_StageTime + 1.25*Timer.Time_Frame* Timer.MapCompensatorSpeed
@@ -200,7 +200,8 @@ def StageDraw():
                     Texture.P_Monster.clip_composite_draw(0,1350,80,75,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
                 elif(monster.AttackType == 3 or monster.AttackType == 4):
                     Texture.P_Monster.clip_composite_draw(0,1350,80,75,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
-
+        if(Global.g_Boss.live == True):
+            Texture.P_Boss1.clip_composite_draw(0,225,75,60,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
 
 
 

@@ -2,6 +2,7 @@ from  globalParamiter import*
 
 def MonsterCol():
     global Global
+
     for Monster in Global.g_MonsterPool:
         if Monster.live == True:
             if(-20< Monster.X< 520)==False:
@@ -16,6 +17,14 @@ def MonsterCol():
                         if (Monster.Y - Monster.H // 2 < Bullet.Y < Monster.Y + Monster.H // 2):
                             Monster.Hit(Bullet.Damage)
                             Bullet.Draw = False
+
+    if(Global.g_Boss.live == True):
+        for Bullet in Global.g_BulletArr:
+            if (Bullet.Draw == True):
+                if (Global.g_Boss.X - Global.g_Boss.W // 2 < Bullet.X < Global.g_Boss.X + Global.g_Boss.W // 2):
+                    if (Global.g_Boss.Y - Global.g_Boss.H // 2 < Bullet.Y < Global.g_Boss.Y + Global.g_Boss.H // 2):
+                        Global.g_Boss.Hit(Bullet.Damage)
+                        Bullet.Draw = False
 
 def MonsterBulletCol():
     global Global

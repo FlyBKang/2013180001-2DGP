@@ -15,6 +15,43 @@ class TIME:
         self.Time_Start = get_time()
 
 Timer = TIME()
+class Boss:
+    live = False
+    W = 80
+    H = 80
+    life = 0
+    frame = 0
+    Speed = 5
+    X = 0
+    Y = 0
+    DirX = 0
+    DirY = 0
+    AttackType = 0
+    AttackDelay = 0.0
+    AttackCycle = 2.5
+
+    def SetDir(self, x, y):
+        self.DirX = x
+        self.DirY = y
+
+    def Rotate(self, degree):
+        self.Degree = degree
+
+    def Move(self):
+        self.X += self.DirX * self.Speed * Timer.Time_Frame * Timer.CompensatorSpeed
+        self.Y += self.DirY * self.Speed * Timer.Time_Frame * Timer.CompensatorSpeed
+
+    def Attack(self):
+        if (self.AttackDelay > self.AttackCycle):
+            return self.AttackType
+        else:
+            self.AttackDelay += Timer.Time_Frame*3
+            return -1
+    def Hit(self,power):
+        self.life -= power
+        if(self.life < 0):
+            self.live = False
+            print("Boss Clear")
 
 class Monster:
     live = False
@@ -30,6 +67,7 @@ class Monster:
     AttackType = 0
     AttackDelay = 0.0
     AttackCycle = 2.5
+
 
     def __init__(self, x,y,degree,framesize):
         self.X = x
@@ -69,7 +107,7 @@ class Monster:
         if(self.AttackDelay > self.AttackCycle):
             return self.AttackType
         else:
-            self.AttackDelay += Timer.Time_Frame*5
+            self.AttackDelay += Timer.Time_Frame*3
             return -1
 
     def Draw(self):
@@ -250,8 +288,8 @@ class MonsterBullet:
         self.X = x
         self.Y = y
     def Move(self):
-        self.X += self.DirX*Timer.Time_Frame*Timer.CompensatorSpeed
-        self.Y += self.DirY*Timer.Time_Frame*Timer.CompensatorSpeed
+        self.X += self.DirX*Timer.Time_Frame*Timer.CompensatorSpeed*self.Speed
+        self.Y += self.DirY*Timer.Time_Frame*Timer.CompensatorSpeed*self.Speed
 
 
 

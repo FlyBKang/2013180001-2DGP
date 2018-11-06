@@ -17,11 +17,16 @@ while(True):
     Input()
     Draw()
     update_canvas()
-
     Timer.Time_Frame = get_time() - elapsed_time
-    Timer.Sec_Per_Frame += Timer.Time_Frame
-    if(Timer.Sec_Per_Frame > Timer.IntTime + 1):
-        Timer.IntTime += 1
+    if(Global.pause == False):
+        Timer.Sec_Per_Frame += Timer.Time_Frame
+        if(Timer.Sec_Per_Frame > Timer.IntTime + 1):
+            Timer.IntTime += 1
+    else:
+        Timer.Time_Start += Timer.Time_Frame
+        Timer.Time_Frame = 0
+
+
     #print(Timer.Sec_Per_Frame)
     #print(Timer.IntTime)
     #print(Timer.Time_Frame)
