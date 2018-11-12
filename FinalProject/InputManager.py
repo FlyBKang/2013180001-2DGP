@@ -133,5 +133,8 @@ def handle_events(events):
                         Global.pause = False
                     else:
                         Global.pause = True
+                if event.key == SDLK_F1:
+                    Global.g_Boss.live = True
+
         else:
             pass

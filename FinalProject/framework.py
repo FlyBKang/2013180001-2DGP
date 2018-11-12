@@ -6,6 +6,8 @@ from Collision import *
 class TEXTURE:
     P_main = load_image("resource\\main.jpg")
     P_player = load_image("resource\\character.png")
+    P_player_alpha = load_image("resource\\character.png")
+    P_player_alpha.opacify(0.5)
     P_light1 = load_image("resource\\Eff_Glitter.png")
     P_light2 = load_image("resource\\Eff_Glitter2.png")
     P_light3 = load_image("resource\\Eff_Glitter3.png")
@@ -190,6 +192,7 @@ def StageDraw():
                 Texture.P_player.clip_draw(28, 28, 7, 7, Global.g_Player.X, Global.g_Player.Y)
 
         angle = math.radians(1)
+
         for monster in Global.g_MonsterPool:
             if(monster.live == True):
                 if(monster.AttackType == 0):
@@ -200,8 +203,13 @@ def StageDraw():
                     Texture.P_Monster.clip_composite_draw(0,1350,80,75,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
                 elif(monster.AttackType == 3 or monster.AttackType == 4):
                     Texture.P_Monster.clip_composite_draw(0,1350,80,75,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+                elif(monster.AttackType == 5):
+                    monster.Rotate(monster.Degree + 3)
+                    Texture.P_player_alpha.clip_composite_draw(65,0,65,65,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+                else:
+                    draw_rectangle(monster.X-50,monster.Y-50,monster.X+50,monster.Y+50)
         if(Global.g_Boss.live == True):
-            Texture.P_Boss1.clip_composite_draw(0,225,75,60,monster.Degree * angle,"",monster.X,monster.Y,monster.W,monster.H)
+            Texture.P_Boss1.clip_composite_draw(0,220,75,60,Global.g_Boss.Degree * angle,"",Global.g_Boss.X,Global.g_Boss.Y,Global.g_Boss.W,Global.g_Boss.H)
 
 
 
@@ -364,7 +372,16 @@ def BulletDraw():
     for Arr in Global.g_MonsterBulletArr:
         if(Arr.Live == True):
             Arr.Move()
-            Texture.P_bullet.clip_draw(0, 0, 65, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+            if(Arr.Type == 0):
+                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+            elif(Arr.Type == 1):
+                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+            elif(Arr.Type == 2):
+                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+            elif(Arr.Type == 3):
+                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+            elif(Arr.Type == 4):
+                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
 
 
 def Input():

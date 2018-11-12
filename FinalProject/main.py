@@ -26,7 +26,6 @@ while(True):
         Timer.Time_Start += Timer.Time_Frame
         Timer.Time_Frame = 0
 
-
     #print(Timer.Sec_Per_Frame)
     #print(Timer.IntTime)
     #print(Timer.Time_Frame)

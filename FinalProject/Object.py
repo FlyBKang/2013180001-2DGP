@@ -4,6 +4,7 @@ from pico2d import *
 
 class TIME:
     Time_Frame = 0.0
+    Time_Start = 0.0
     Sec_Per_Frame = 0.0
     IntTime = 0
     MapCompensatorSpeed = 20
@@ -26,13 +27,19 @@ class Boss:
     Y = 0
     DirX = 0
     DirY = 0
+    Degree = 0
     AttackType = 0
     AttackDelay = 0.0
     AttackCycle = 2.5
-
-    def SetDir(self, x, y):
-        self.DirX = x
-        self.DirY = y
+    DesX = 0
+    DesY = 0
+    ATT = False
+    def SetDes(self, x, y):
+        self.DesX = x
+        self.DesY = y
+        self.DirX = (x - self.X)/200
+        self.DirY = (y - self.Y)/200
+        print((x,y))
 
     def Rotate(self, degree):
         self.Degree = degree
@@ -40,13 +47,21 @@ class Boss:
     def Move(self):
         self.X += self.DirX * self.Speed * Timer.Time_Frame * Timer.CompensatorSpeed
         self.Y += self.DirY * self.Speed * Timer.Time_Frame * Timer.CompensatorSpeed
+        if(self.DesX - 10 < self.X < self.DesX +10 ):
+            if(self.DesY - 10 < self.Y < self.DesY +10 ):
+                self.DirX = 0.0
+                self.DirY = 0.0
+                return True
+        return False
+
 
     def Attack(self):
         if (self.AttackDelay > self.AttackCycle):
-            return self.AttackType
+            return 1
         else:
             self.AttackDelay += Timer.Time_Frame*3
             return -1
+
     def Hit(self,power):
         self.life -= power
         if(self.life < 0):
@@ -67,7 +82,6 @@ class Monster:
     AttackType = 0
     AttackDelay = 0.0
     AttackCycle = 2.5
-
 
     def __init__(self, x,y,degree,framesize):
         self.X = x
@@ -93,6 +107,11 @@ class Monster:
             self.W = 40
             self.H = 40
             self.AttackDelay = cycle - 1.5
+        elif(type == 5):
+            self.W = 40
+            self.H = 40
+            self.AttackDelay = 0
+
 
         self.AttackCycle = cycle
     def SetDir(self,x,y):
