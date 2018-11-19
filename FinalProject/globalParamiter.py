@@ -218,7 +218,7 @@ class GLOBAL:
                     Monster.live = True
 
         if(Global.g_Boss.life > 0):
-            if(get_time() - Timer.Time_Start> 1):
+            if(get_time() - Timer.Time_Start> 60):
                 for Monster in self.g_MonsterPool:
                     Monster.live = False
                 Global.g_Boss.live = True
