@@ -373,15 +373,15 @@ def BulletDraw():
         if(Arr.Live == True):
             Arr.Move()
             if(Arr.Type == 0):
-                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+                Texture.P_bullet.clip_draw(Arr.Type * 63, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
             elif(Arr.Type == 1):
-                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+                Texture.P_bullet.clip_draw(Arr.Type * 63, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
             elif(Arr.Type == 2):
-                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+                Texture.P_bullet.clip_draw(Arr.Type * 63, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
             elif(Arr.Type == 3):
-                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+                Texture.P_bullet.clip_draw(Arr.Type * 63, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
             elif(Arr.Type == 4):
-                Texture.P_bullet.clip_draw(Arr.Type * 64, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
+                Texture.P_bullet.clip_draw(Arr.Type * 63, 0, 62, 65, Arr.X, Arr.Y, Arr.W, Arr.H)
 
 
 def Input():

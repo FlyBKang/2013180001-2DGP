@@ -28,6 +28,8 @@ class Boss:
     DirX = 0
     DirY = 0
     Degree = 0
+    SkillCycle = [1.5,2,3.4,3,5]
+    SkillDelay = [0.0,0.0,0.0,0.0 ,0.0]
     AttackType = 0
     AttackDelay = 0.0
     AttackCycle = 2.5
@@ -61,6 +63,9 @@ class Boss:
         else:
             self.AttackDelay += Timer.Time_Frame*3
             return -1
+    def Skill(self):
+        for i in range(len(self.SkillCycle)):
+            self.SkillDelay[i] += Timer.Time_Frame * 3
 
     def Hit(self,power):
         self.life -= power

@@ -53,6 +53,7 @@ class GLOBAL:
     g_MonsterBulletArr = [MonsterBullet() for i in range(0,1000)]
     g_MonsterBulletCnt = 0
 
+
     def SetMonsterBullet(self,x,y,Dx,Dy,speed,w,h,type):
         for i in range(0,len(self.g_MonsterBulletArr)):
             if(self.g_MonsterBulletArr[i].Live == True):
@@ -62,9 +63,6 @@ class GLOBAL:
                 self.g_MonsterBulletArr[i].Type = type
                 self.g_MonsterBulletArr[i].Live = True
                 break
-
-
-
 
     def MonsterAttack(self):
         for Monster in self.g_MonsterPool:
@@ -146,9 +144,6 @@ class GLOBAL:
 
     def MonsterSet(self):
         if(self.g_Level == 0):
-            for i in range(0, 3):
-                self.g_MonsterPool[90+i].Set(50+25*i,820,50+25*self.g_Hard,2+i*0.2,5,0.1)
-                self.g_MonsterPool[90+i].SetDir(-0.1,-1.5)
             for i in range(0,3):
                 self.g_MonsterPool[i].Set(450,820,30+10*self.g_Hard,(i)*0.5+5,0,10-Global.g_Hard)
                 self.g_MonsterPool[i].SetDir(-1,-0.5)
@@ -164,7 +159,6 @@ class GLOBAL:
             for i in range(26,29):
                 self.g_MonsterPool[i].Set(150 + 100*(26-i),820,50+10*self.g_Hard,15,1,15-Global.g_Hard*2)
                 self.g_MonsterPool[i].SetDir(0,-0.5)
-
 
             for i in range(30,40):
                 self.g_MonsterPool[i].Set(50 + 50*(random.randint(0,9)),820,30+10*self.g_Hard,random.randint(5,20)*0.5+18,0,15-Global.g_Hard*2)
@@ -202,13 +196,15 @@ class GLOBAL:
             if(Global.g_Hard >= 2):
                 self.g_MonsterPool[42].Set(150, 820, 250 + 100 * self.g_Hard, 45, 3, 8)
                 self.g_MonsterPool[42].SetDir(0, -0.5)
+                for i in range(0, 3):
+                    self.g_MonsterPool[90 + i].Set(50 + 35 * i, 820, 50 + 25 * self.g_Hard, 40 + i * 0.2, 0, 0.1)
+                    self.g_MonsterPool[90 + i].SetDir(-0.1, -1.5)
 
-            self.g_Boss.life = 1000 + 1000 * Global.g_Level + 500 * Global.g_Hard
+            self.g_Boss.life = 1000 + 1000 * Global.g_Level + 300 * Global.g_Hard
             self.g_Boss.AttackType = Global.g_Level
             self.g_Boss.X = 250
             self.g_Boss.Y = 820
             self.g_Boss.SetDes(250,600)
-
 
     def MonsterActive(self):
         global Timer
@@ -218,11 +214,10 @@ class GLOBAL:
                     Monster.live = True
 
         if(Global.g_Boss.life > 0):
-            if(get_time() - Timer.Time_Start> 60):
+            if(get_time() - Timer.Time_Start> 2):
                 for Monster in self.g_MonsterPool:
                     Monster.live = False
                 Global.g_Boss.live = True
-
 
     def MonsterMove(self):
         global Timer
@@ -232,7 +227,6 @@ class GLOBAL:
 
         if(self.g_Boss.live == True):
             if self.g_Boss.ATT == False:
-                print(self.g_Boss.Move())
                 self.g_Boss.ATT = self.g_Boss.Move()
                 if(self.g_Boss.ATT == True):
                     self.g_Boss.AttackCycle = 10
@@ -241,17 +235,35 @@ class GLOBAL:
                     self.g_Boss.AttackDelay = 0.0
                     self.g_Boss.SetDes(random.randint(1,4)*100,random.randint(10,15)*50)
                     self.g_Boss.ATT = False
+                    #self.g_Boss.AttackType += 1
                 else:
-                    if (abs(self.g_Player.X - self.g_Boss.X) > abs(self.g_Player.Y - self.g_Boss.Y)):
-                        self.SetMonsterBullet(self.g_Boss.X, self.g_Boss.Y,
-                                              (self.g_Player.X - self.g_Boss.X) / abs(self.g_Player.X - self.g_Boss.X),
-                                              (self.g_Player.Y - self.g_Boss.Y) / abs(self.g_Player.X - self.g_Boss.X), 10,
-                                              20, 20, 0)
-                    else:
-                        self.SetMonsterBullet(self.g_Boss.X, self.g_Boss.Y,
-                                              (self.g_Player.X - self.g_Boss.X) / abs(self.g_Player.Y - self.g_Boss.Y),
-                                              (self.g_Player.Y - self.g_Boss.Y) / abs(self.g_Player.Y - self.g_Boss.Y), 10,
-                                              20, 20, 0)
+                    self.g_Boss.Skill()
+                    if(self.g_Boss.AttackType == 0):
+                        for i in range(len(self.g_Boss.SkillCycle)):
+                            if(self.g_Boss.SkillCycle[i] - (self.g_Hard)/2 < self.g_Boss.SkillDelay[i]):
+                                self.g_Boss.SkillDelay[i] = 0
+                                if( i == 0):
+                                    if (abs(self.g_Player.X - self.g_Boss.X) > abs(self.g_Player.Y - self.g_Boss.Y)):
+                                        self.SetMonsterBullet(self.g_Boss.X, self.g_Boss.Y,
+                                                              (self.g_Player.X - self.g_Boss.X) / abs(self.g_Player.X - self.g_Boss.X),
+                                                              (self.g_Player.Y - self.g_Boss.Y) / abs(self.g_Player.X - self.g_Boss.X), 10,
+                                                              20, 20, 0)
+                                    else:
+                                        self.SetMonsterBullet(self.g_Boss.X, self.g_Boss.Y,
+                                                              (self.g_Player.X - self.g_Boss.X) / abs(self.g_Player.Y - self.g_Boss.Y),
+                                                              (self.g_Player.Y - self.g_Boss.Y) / abs(self.g_Player.Y - self.g_Boss.Y), 10,
+                                                              20, 20, 0)
+                                TEMP =random.randint(-10,11)
+                                if( i == 1):
+                                    for j in range(0, 6):
+                                        self.SetMonsterBullet(self.g_Boss.X, self.g_Boss.Y,
+                                                              5 * math.sin(math.radians(j * 360 // 6+30+TEMP)),
+                                                              -5 * math.cos(math.radians(j * 360 // 6+30+TEMP)), 0.5, 48,48, 3)
+                                if (i == 2):
+                                    for j in range(0, 18):
+                                        self.SetMonsterBullet(self.g_Boss.X, self.g_Boss.Y,
+                                                              5 * math.sin(math.radians(j * 360 // 6+TEMP)),
+                                                              -5 * math.cos(math.radians(j * 360 // 6+TEMP)), 1, 20, 20, 2)
 
 
 
