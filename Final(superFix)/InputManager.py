@@ -53,7 +53,6 @@ def handle_events(events):
 
                 if (100 < Global.MyMouse[0] < 700):
                     if (250 < Global.MyMouse[1] < 350):
-                        close_canvas()
                         exit(1);
 
         elif(Global.stage == "level"):
@@ -186,6 +185,8 @@ def handle_events(events):
                 if event.key == SDLK_m:
                     if(Global.g_Player.BulletNum>3):
                         Global.g_Player.BulletNum -= 1
+                if event.key == SDLK_p:
+                    exit(1)
 
 
 
